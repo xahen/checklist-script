@@ -13,7 +13,7 @@ also: research more about the pickle module, as i don't know much
 #import sys
 import pickle
 from os.path import exists as file_exists
-from os import listdir
+from os import listdir, makedirs
 from datetime import datetime
 
 
@@ -162,21 +162,20 @@ def checkItem():
         else:
             print("that item has already been checked")
 
-
 def saveChecklist():
-    if file_exists(f"saves\{currentChecklist.year}\{currentChecklist.month_number} {currentChecklist.month}\{currentChecklist.save_name}"):
+    createFolder()
+    if file_exists(f"{dirName}\{currentChecklist.save_name}"):
         saveChoice = str(input("\nthis file already exists, are you sure you want to overwrite it? y/n\n\n")).lower()
         if saveChoice == "y":
-            pickle.dump(currentChecklist, open(f"saves\{currentChecklist.year}\{currentChecklist.month_number} {currentChecklist.month}\{currentChecklist.save_name}", "wb"))
+            pickle.dump(currentChecklist, open(f"{dirName}\{currentChecklist.save_name}", "wb"))
             print("\nchecklist saved\n")
         elif saveChoice == "n":
             print("\nchecklist not saved\n")
         else:
             print("\nfalse input\n")
     else:
-        pickle.dump(currentChecklist, open(f"saves\{currentChecklist.year}\{currentChecklist.month_number} {currentChecklist.month}\{currentChecklist.save_name}", "wb"))
+        pickle.dump(currentChecklist, open(f"{dirName}\{currentChecklist.save_name}", "wb"))
         print()
-
 
 def loadChecklist(file, startup):
     print()
@@ -268,17 +267,22 @@ def loadChecklist(file, startup):
                 else:
                     y += 1
 
+def createFolder():
+    try:
+        makedirs(dirName)
+    except FileExistsError:
+        pass
         
 
 checkMark = "✓"
 currentTime = datetime.now()
 #saveDate = datetime.now().strftime("%Y_%m_%d")
 #saveName = datetime.now().strftime(f"{saveDate}_checklist.dat")
-currentChecklist = ChecklistSlate()
 #fileLoaded = False
 
-
+currentChecklist = ChecklistSlate()
 mainCL = currentChecklist.checklist
+dirName = f"saves\{currentChecklist.year}\{currentChecklist.month_number} {currentChecklist.month}"
 
 print("checklist app\n")
 
@@ -303,6 +307,7 @@ while True:
     elif checklistChoice == "load":
         currentChecklist = loadChecklist("", False)
         mainCL = currentChecklist.checklist
+        dirName = f"saves\{currentChecklist.year}\{currentChecklist.month_number} {currentChecklist.month}"
 
     elif checklistChoice == "exit" or checklistChoice == "quit" or checklistChoice == "q":
         print()
