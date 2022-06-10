@@ -292,45 +292,47 @@ while True:
     print("what do you want to do to your checklist?\noptions: 'add' item(s), 'remove' item(s), 'check' off an item, 'view' the list, 'load' a checklist\n")
     checklistChoice = str(input()).lower()
 
-    if checklistChoice == 'add':
-        addItem()
-
-    elif checklistChoice == 'remove' or checklistChoice == 'rmv':
-        removeItem()
-
-    elif checklistChoice == "check":
-        checkItem()
-
-    elif checklistChoice == "view":
-        currentChecklist.viewChecklist()
-
-    elif checklistChoice == "load":
-        currentChecklist = loadChecklist("", False)
-        mainCL = currentChecklist.checklist
-        dirName = f"saves\{currentChecklist.year}\{currentChecklist.month_number} {currentChecklist.month}"
-
-    elif checklistChoice == "exit" or checklistChoice == "quit" or checklistChoice == "q":
-        print()
-        if len(mainCL) > 0:
-            quitChoice = str(input("exiting... would you like to save your current checklist? y/n\n\n")).lower()
-
-            if quitChoice == "y":
-                saveChecklist()
-                break
-
-            elif quitChoice == "n":
-                print("\nchecklist not saved\n")
-                break
-            else:
-                print("\nfalse input")
+    match checklistChoice:
+        case 'add':
+            addItem()
         
-        else:
-            print("exiting...\n")
-            break
+        case ('remove'|'rmv'):
+            removeItem()
 
-    else:
-        print("\nfalse input")
-    
+        case 'check':
+            checkItem()
+
+        case 'view':
+            currentChecklist.viewChecklist()
+
+        case 'load':
+            currentChecklist = loadChecklist("", False)
+            mainCL = currentChecklist.checklist
+            dirName = f"saves\{currentChecklist.year}\{currentChecklist.month_number} {currentChecklist.month}"
+
+        case ('exit'|'quit'|'q'):
+            print()
+            if len(mainCL) > 0:
+                quitChoice = str(input("exiting... would you like to save your current checklist? y/n\n\n")).lower()
+
+                if quitChoice == "y":
+                    saveChecklist()
+                    break
+
+                elif quitChoice == "n":
+                    print("\nchecklist not saved\n")
+                    break
+
+                else:
+                    print("\nfalse input")
+            
+            else:
+                print("exiting...\n")
+                break
+        
+        case _:
+            print("\nfalse input")
+
     print()
 
 
