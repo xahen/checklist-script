@@ -138,14 +138,15 @@ def removeItem():
         del mainCL[removeChoice]
 
 def checkItem():
-    print("\nwhich item would you like to check off as finished?")
+    
     
     currentChecklist.viewChecklist()
+
+    print("\nwhich item would you like to check off as finished?")
 
     print()
 
     checkChoice = input()
-    print()
 
     try:
         checkChoice = int(checkChoice)
@@ -301,6 +302,7 @@ while True:
 
     elif checklistChoice == "load":
         currentChecklist = loadChecklist("", False)
+        mainCL = currentChecklist.checklist
 
     elif checklistChoice == "exit" or checklistChoice == "quit" or checklistChoice == "q":
         print()
